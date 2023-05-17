@@ -1,9 +1,10 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include <iostream>
-#include "../../Source/include/Ressources/Shader.h"
+#include "Ressources/Shader.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "Image/stb_image.h"
+#include "Core/Debug/Log.h"
 
 void ResizeCallback(GLFWwindow* window, int width, int height)
 {
@@ -109,6 +110,12 @@ int main(int, char**)
     glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0); 
     ourShader.setInt("texture2", 1); 
 
+    Log test;
+    test.OpenFile("Source/src/Core/Debug/WritedFiles/Log.txt");
+    
+    //test.Print("Hello world, answer is %i\n", 42);
+    //test.Print("One two three ! %i %i %i\n", 1, 2, 3);
+
     while (!glfwWindowShouldClose(window))
     {
 
@@ -122,7 +129,6 @@ int main(int, char**)
 
         ourShader.use();
         glBindVertexArray(VAO);
-        //ourShader.setFloat("someUniform", 1.0f);
 
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
