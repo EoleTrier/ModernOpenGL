@@ -16,3 +16,8 @@ float Vector3::DotProduct(Vector3 v)
 	Vector3 dot = *this * v;
 	return dot.x + dot.y + dot.z;
 }
+
+Vector3 Vector3::CrossProduct(Vector3 v)
+{
+	return Vector3{ this->y * v.z - this->z * v.y, this->z * v.x - this->x * v.z, this->x * v.y - this->y * v.x };
+}

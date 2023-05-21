@@ -1,0 +1,5 @@
+﻿  Shader.cpp
+  main.cpp
+  Génération de code en cours...
+LINK : warning LNK4098: conflit entre la bibliothèque par défaut 'MSVCRT' et les autres bibliothèques ; utilisez /NODEFAULTLIB:library
+  ModernOpenGL.vcxproj -> C:\Users\Eole\Projects\2022_gp1_modern-opengl-gp1_trier_e\ModernOpenGL\x64\Debug\ModernOpenGL.exe

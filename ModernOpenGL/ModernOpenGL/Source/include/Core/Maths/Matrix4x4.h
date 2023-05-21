@@ -7,16 +7,18 @@
 class Matrix4x4
 {
 public:
-	std::vector<std::vector<float>> mat;
+	float mat[16];
 
-	Matrix4x4() { };
-	Matrix4x4(const std::initializer_list<std::vector<float>> data)
-		: mat(data){}
+	Matrix4x4();
+	Matrix4x4(const std::initializer_list<float> data);
+		
 	~Matrix4x4() {};
 
 
 	static Matrix4x4 identity();
 	
+	Matrix4x4 transpose();
+
 	Matrix4x4 scaling3D(const Vector3& v) const;
 	Matrix4x4 rotate3DX(float angle) const;
 	Matrix4x4 rotate3DY(float angle) const;

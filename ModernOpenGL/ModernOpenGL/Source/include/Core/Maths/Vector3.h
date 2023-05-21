@@ -14,6 +14,7 @@ public:
 	float Length();
 	Vector3 Normalized();
 	float DotProduct(Vector3 v);
+	Vector3 CrossProduct(Vector3 v);
 
 	Vector3 operator*(float mult) const { return Vector3{ x * mult, y * mult, z * mult }; }
 	Vector3 operator/(float divi) const { return Vector3{ x / divi, y / divi, z / divi }; }
