@@ -7,10 +7,58 @@
 #include "Core/Debug/Log.h"
 #include "Core/Maths/Matrix4x4.h"
 
+#include "LowRenderer/Camera.h"
+
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 void ResizeCallback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
+}
+
+Camera camera(Vector3(0.0f, 0.0f, 3.0f));
+float lastX = 400, lastY = 300;
+float yaw = 0, pitch = 0;
+bool firstMouse = true;
+Vector3 cameraFront;
+
+void MouseCallback(GLFWwindow* window, double xposIn, double yposIn)
+{
+    float xpos = static_cast<float>(xposIn);
+    float ypos = static_cast<float>(yposIn);
+
+    if (firstMouse)
+    {
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+
+    lastX = xpos;
+    lastY = ypos;
+
+    camera.ProcessMouseMovement(xoffset, yoffset);
+}
+
+void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    camera.ProcessMouseScroll(static_cast<float>(yoffset));
+}
+
+void ProcessInput(GLFWwindow* window, float deltaTime)
+{
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        camera.ProcessKeyboard(CameraMovement::FORWARD, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        camera.ProcessKeyboard(CameraMovement::BACKWARD, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        camera.ProcessKeyboard(CameraMovement::LEFT, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        camera.ProcessKeyboard(CameraMovement::RIGHT, deltaTime);
 }
 
 int main(int, char**)
@@ -28,16 +76,69 @@ int main(int, char**)
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, ResizeCallback);
+    glfwSetCursorPosCallback(window, MouseCallback);
+    glfwSetScrollCallback(window, ScrollCallback);
+
     gladLoadGL();
 
 
     Shader ourShader("Source/shaders/shader.vs", "Source/shaders/shader.fs");
 
     float vertices[] = {
-         0.5f,  0.5f, 0.0f,  1.0f, 1.0f, //top right
-         0.5f, -0.5f, 0.0f,  1.0f, 0.0f, //bot right
-        -0.5f, -0.5f, 0.0f,  0.0f, 0.0f, //bot left
-        -0.5f,  0.5f, 0.0f,  0.0f, 1.0f  //top left
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+         0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+    };
+
+    Vector3 cubePositions[] = {
+        Vector3(0.0f,  0.0f,  0.0f),
+        Vector3(2.0f,  5.0f, -15.0f),
+        Vector3(-1.5f, -2.2f, -2.5f),
+        Vector3(-3.8f, -2.0f, -12.3f),
+        Vector3(2.4f, -0.4f, -3.5f),
+        Vector3(-1.7f,  3.0f, -7.5f),
+        Vector3(1.3f, -2.0f, -2.5f),
+        Vector3(1.5f,  2.0f, -2.5f),
+        Vector3(1.5f,  0.2f, -1.5f),
+        Vector3(-1.3f,  1.0f, -1.5f)
     };
 
     unsigned int indices[] = {
@@ -111,16 +212,34 @@ int main(int, char**)
     ourShader.setInt("texture1", 0);
     ourShader.setInt("texture2", 1);
 
-    
+    /*Log feur;
+    feur.OpenFile("Source/src/Core/Debug/WritedFiles/Log.txt");
+    feur.Print("Ratio max %f, %d 100% + ultra", 1.214f, 10);
+    feur.Print("HIHI");*/
+
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+    glEnable(GL_DEPTH_TEST);
+    float deltaTime = 0;
+    float lastFrame = 0;
     while (!glfwWindowShouldClose(window))
     {
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        float currentFrame = static_cast<float>(glfwGetTime());
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
 
-        Matrix4x4 Model = Matrix4x4::identity();
-        Model = Model.TRS(Model.rotate3DX((float)glfwGetTime()), Vector3{ 0, 0, 0 }, Vector3{ 1, 1, 1 })
-            * Model.TRS(Model.rotate3DY((float)glfwGetTime()), Vector3{ 0, 0, 0 }, Vector3{ 1, 1, 1 })
-            * Model.TRS(Model.rotate3DZ((float)glfwGetTime()), Vector3{ 0, 0, 0 }, Vector3{1, 1, 1});
+        // input
+        // -----
+        ProcessInput(window, deltaTime);
+
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        Matrix4x4 model = Matrix4x4::TRS(Vector3(glfwGetTime()), Vector3(0), Vector3(1));
+        Matrix4x4 view = camera.GetViewMatrix();
+        Matrix4x4 projection = Matrix4x4::PerspectiveProjection(camera.Zoom * ToRadians, 800.f/600.f, 0.1f, 100.f);
+
+
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture1);
@@ -129,11 +248,20 @@ int main(int, char**)
 
 
         ourShader.use();
-        unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
-        ourShader.setMat4("transform", Model);
+
+        ourShader.setMat4("model", model);
+        ourShader.setMat4("view", view);
+        ourShader.setMat4("projection", projection);
+
         glBindVertexArray(VAO);
 
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        for (unsigned int i = 0; i < 10; i++)
+        {
+            Matrix4x4 model = Matrix4x4::TRS(20.0f * i * ToRadians, cubePositions[i], 1);
+            ourShader.setMat4("model", model);
+
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
 
         glfwSwapBuffers(window);
         glfwPollEvents();

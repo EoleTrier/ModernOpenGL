@@ -12,19 +12,21 @@ public:
 	Matrix4x4();
 	Matrix4x4(const std::initializer_list<float> data);
 		
-	~Matrix4x4() {};
-
-
 	static Matrix4x4 identity();
 	
 	Matrix4x4 transpose();
 
-	Matrix4x4 scaling3D(const Vector3& v) const;
-	Matrix4x4 rotate3DX(float angle) const;
-	Matrix4x4 rotate3DY(float angle) const;
-	Matrix4x4 rotate3DZ(float angle) const;
-	Matrix4x4 TRS(const Matrix4x4& rota, const Vector3& trans, const Vector3& scale) const;
+	static Matrix4x4 scaling3D(const Vector3& v);
+	static Matrix4x4 rotate3DX(float angle);
+	static Matrix4x4 rotate3DY(float angle);
+	static Matrix4x4 rotate3DZ(float angle);
+	static Matrix4x4 TRS(const Matrix4x4& rota, const Vector3& trans, const Vector3& scale);
+	static Matrix4x4 TRS(const Vector3& rota, const Vector3& trans, const Vector3& scale);
+
+	static Matrix4x4 PerspectiveProjection(float fovy, float aspect, float zNear, float zFar);
+	static Matrix4x4 ViewMatrix(const Vector3& eye, const Vector3& center, const Vector3& up);
+
+
 	Matrix4x4 operator*(const Matrix4x4& a);
 	Vector4 operator*(const Vector4& v);
 };
-

@@ -11,10 +11,10 @@ public:
 	Vector3(float xyz) : x(xyz), y(xyz), z(xyz) {}
 	Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
 
-	float Length();
-	Vector3 Normalized();
-	float DotProduct(Vector3 v);
-	Vector3 CrossProduct(Vector3 v);
+	float Length() const;
+	Vector3 Normalized() const;
+	float DotProduct(const Vector3& v) const;
+	Vector3 CrossProduct(const Vector3& v) const;
 
 	Vector3 operator*(float mult) const { return Vector3{ x * mult, y * mult, z * mult }; }
 	Vector3 operator/(float divi) const { return Vector3{ x / divi, y / divi, z / divi }; }
