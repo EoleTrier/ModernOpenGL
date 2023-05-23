@@ -99,7 +99,7 @@
     <ClInclude Include="Source\include\Ressources\Texture.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Source\include\Ressources\IResource.h">
+    <ClInclude Include="Source\include\Ressources\Resource.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Source\include\Ressources\Application.h">

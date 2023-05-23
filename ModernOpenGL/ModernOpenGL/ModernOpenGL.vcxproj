@@ -44,7 +44,7 @@
     <ClInclude Include="Source\include\LowRenderer\Mesh.h" />
     <ClInclude Include="Source\include\Physics\Transform.h" />
     <ClInclude Include="Source\include\Ressources\Application.h" />
-    <ClInclude Include="Source\include\Ressources\IResource.h" />
+    <ClInclude Include="Source\include\Ressources\Resource.h" />
     <ClInclude Include="Source\include\Ressources\Model.h" />
     <ClInclude Include="Source\include\Ressources\ResourceManager.h" />
     <ClInclude Include="Source\include\Ressources\Scene.h" />
