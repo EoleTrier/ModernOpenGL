@@ -60,9 +60,6 @@
     <ClInclude Include="Source\include\Core\Debug\Assertion.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Source\include\Core\Debug\Log.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="Source\include\Core\Maths\Matrix4x4.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -90,7 +87,7 @@
     <ClInclude Include="Source\include\Ressources\Model.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Source\include\Ressources\RessourcesManager.h">
+    <ClInclude Include="Source\include\Ressources\ResourceManager.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Source\include\Ressources\Scene.h">
@@ -100,6 +97,15 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Source\include\Ressources\Texture.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\include\Ressources\IResource.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\include\Ressources\Application.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\include\Core\Debug\Log.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
@@ -140,7 +146,7 @@
     <ClCompile Include="Source\src\Ressources\Modele.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\src\Ressources\RessourcesManager.cpp">
+    <ClCompile Include="Source\src\Ressources\ResourceManager.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Source\src\Ressources\Scene.cpp">
@@ -156,6 +162,9 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Externals\src\glad.c">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\src\Ressources\Application.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>

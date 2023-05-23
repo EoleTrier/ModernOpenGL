@@ -3,15 +3,8 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include <glad/glad.h>
-
 #include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
 #include "Core/Maths/Vector2.h"
-#include "Core/Maths/Vector3.h"
-#include "Core/Maths/Vector4.h"
 #include "Core/Maths/Matrix4x4.h"
 
 class Shader

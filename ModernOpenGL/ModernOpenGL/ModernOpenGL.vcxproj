@@ -43,8 +43,10 @@
     <ClInclude Include="Source\include\LowRenderer\Light.h" />
     <ClInclude Include="Source\include\LowRenderer\Mesh.h" />
     <ClInclude Include="Source\include\Physics\Transform.h" />
+    <ClInclude Include="Source\include\Ressources\Application.h" />
+    <ClInclude Include="Source\include\Ressources\IResource.h" />
     <ClInclude Include="Source\include\Ressources\Model.h" />
-    <ClInclude Include="Source\include\Ressources\RessourcesManager.h" />
+    <ClInclude Include="Source\include\Ressources\ResourceManager.h" />
     <ClInclude Include="Source\include\Ressources\Scene.h" />
     <ClInclude Include="Source\include\Ressources\Shader.h" />
     <ClInclude Include="Source\include\Ressources\Texture.h" />
@@ -63,8 +65,9 @@
     <ClCompile Include="Source\src\LowRenderer\Mesh.cpp" />
     <ClCompile Include="Source\src\main.cpp" />
     <ClCompile Include="Source\src\Physics\Transform.cpp" />
+    <ClCompile Include="Source\src\Ressources\Application.cpp" />
     <ClCompile Include="Source\src\Ressources\Modele.cpp" />
-    <ClCompile Include="Source\src\Ressources\RessourcesManager.cpp" />
+    <ClCompile Include="Source\src\Ressources\ResourceManager.cpp" />
     <ClCompile Include="Source\src\Ressources\Scene.cpp" />
     <ClCompile Include="Source\src\Ressources\Shader.cpp" />
     <ClCompile Include="Source\src\Ressources\Texture.cpp" />
