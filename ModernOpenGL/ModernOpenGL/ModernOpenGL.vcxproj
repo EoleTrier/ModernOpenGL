@@ -66,7 +66,7 @@
     <ClCompile Include="Source\src\main.cpp" />
     <ClCompile Include="Source\src\Physics\Transform.cpp" />
     <ClCompile Include="Source\src\Ressources\Application.cpp" />
-    <ClCompile Include="Source\src\Ressources\Modele.cpp" />
+    <ClCompile Include="Source\src\Ressources\Model.cpp" />
     <ClCompile Include="Source\src\Ressources\ResourceManager.cpp" />
     <ClCompile Include="Source\src\Ressources\Scene.cpp" />
     <ClCompile Include="Source\src\Ressources\Shader.cpp" />

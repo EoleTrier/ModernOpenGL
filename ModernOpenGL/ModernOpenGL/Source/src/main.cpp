@@ -21,8 +21,6 @@ int main(int, char**)
         glfwPollEvents();
     }
 
-    app.~Application();
-
     glfwTerminate();
     return 0;
 }

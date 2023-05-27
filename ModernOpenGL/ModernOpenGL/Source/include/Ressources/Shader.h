@@ -6,12 +6,13 @@
 #include <string>
 #include "Core/Maths/Vector2.h"
 #include "Core/Maths/Matrix4x4.h"
+#include "Resource.h"
 
-class Shader
+class Shader : public Resource
 {
 public:
     unsigned int ID;
-
+    Shader() {};
     Shader(const char* vertexPath, const char* fragmentPath);
 
     void use();
