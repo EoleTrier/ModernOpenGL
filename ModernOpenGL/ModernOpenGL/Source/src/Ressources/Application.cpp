@@ -6,8 +6,10 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include "Ressources/Application.h"
-
 #include "Ressources/Model.h"
+#include "Core/Debug/Assertion.h"
+#include "Core/Debug/Log.h"
+
 
 unsigned int Application::VBO, Application::VAO;
 
@@ -61,23 +63,19 @@ Application::Application()
 
     gladLoadGL();
 
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     Shader ourShader("Source/shaders/shader.vs", "Source/shaders/shader.fs");
 
     Model* viking = resourceManager.Create<Model>("model_viking");
     viking->shader = ourShader;
-    viking->Load("Assets/models/viking_room.obj", "Assets/textures/viking_room.jpg");
-
-    /*Log feur;
-    feur.OpenFile("Source/src/Core/Debug/WritedFiles/Log.txt");
-    feur.Print("Ratio max %f, %d 100% + ultra", 1.214f, 10);
-    feur.Print("HIHI");*/
+    viking->Load("Assets/meshes/viking_room.obj", "Assets/textures/viking_room.jpg");
+    //resourceManager.Delete("model_viking");
 
     glEnable(GL_DEPTH_TEST);
     float deltaTime = 0;
     float lastFrame = 0;
-   
+
 }
 
 Application::~Application()

@@ -54,7 +54,6 @@
   <ItemGroup>
     <ClCompile Include="Externals\src\glad.c" />
     <ClCompile Include="Source\src\Core\DataStructure\Graph.cpp" />
-    <ClCompile Include="Source\src\Core\Debug\Assertion.cpp" />
     <ClCompile Include="Source\src\Core\Debug\Log.cpp" />
     <ClCompile Include="Source\src\Core\Maths\Matrix4x4.cpp" />
     <ClCompile Include="Source\src\Core\Maths\Vector2.cpp" />

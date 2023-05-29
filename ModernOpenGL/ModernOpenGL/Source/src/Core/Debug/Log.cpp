@@ -2,6 +2,10 @@
 #include <iostream>
 #include <cstdarg>
 
+
+std::fstream Log::m_File;
+
+
 Log::~Log()
 {
     m_File.close();
@@ -33,7 +37,6 @@ void Log::Print(const char* format, ...)
         m_File << buffer << std::endl;
         m_File.flush();
     }
-    std::cout << "Bing chilling" << std::endl;
-    std::cout << "ratio" << std::endl;
+    
     va_end(args);
 }

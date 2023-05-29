@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef SHADER_H
-#define SHADER_H
-
 #include <string>
 #include "Core/Maths/Vector2.h"
 #include "Core/Maths/Matrix4x4.h"
@@ -31,4 +28,3 @@ private:
     void checkCompileErrors(unsigned int shader, std::string type);
 };
 
-#endif
