@@ -8,9 +8,9 @@
 class Shader : public Resource
 {
 public:
-    unsigned int ID;
-    Shader() {};
-    Shader(const char* vertexPath, const char* fragmentPath);
+    Shader();
+    void SetVertexAndFragmentShader(const char* vertexPath, const char* fragmentPath);
+    
 
     void use();
     void setBool(const std::string& name, bool value) const;
@@ -25,6 +25,7 @@ public:
     void setMat4(const std::string& name, const Matrix4x4& mat) const;
    
 private:
+    unsigned int ID;
     void checkCompileErrors(unsigned int shader, std::string type);
 };
 

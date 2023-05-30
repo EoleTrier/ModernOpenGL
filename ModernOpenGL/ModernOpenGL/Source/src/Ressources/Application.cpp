@@ -9,9 +9,8 @@
 #include "Ressources/Model.h"
 #include "Core/Debug/Assertion.h"
 #include "Core/Debug/Log.h"
+#include "LowRenderer/Mesh.h"
 
-
-unsigned int Application::VBO, Application::VAO;
 
 Camera Application::camera(Vector3(0.0f, 0.0f, 3.0f));
 float Application::lastX = 400, Application::lastY = 300;
@@ -25,11 +24,8 @@ float Application::lastFrame;
 float Application::Width = 800;
 float Application::Height = 600;
 
-unsigned int Application::texture1, Application::texture2;
 GLFWwindow* Application::window;
 
-
-Shader Application::ourShader("Source/shaders/shader.vs", "Source/shaders/shader.fs");
 
 
 Application::Application()
@@ -65,11 +61,15 @@ Application::Application()
 
     //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    Shader ourShader("Source/shaders/shader.vs", "Source/shaders/shader.fs");
+    Shader* shad = resourceManager.Create<Shader>("viking_shader");
+    shad->SetVertexAndFragmentShader("Source/shaders/shader.vs", "Source/shaders/shader.fs");
+    Texture* text = resourceManager.Create<Texture>("viking_texture");
+    text->Load("Assets/textures/viking_room.jpg");
 
     Model* viking = resourceManager.Create<Model>("model_viking");
-    viking->shader = ourShader;
     viking->Load("Assets/meshes/viking_room.obj", "Assets/textures/viking_room.jpg");
+
+    Mesh mesh(viking, shad, text);
     //resourceManager.Delete("model_viking");
 
     glEnable(GL_DEPTH_TEST);
@@ -143,6 +143,7 @@ void Application::Update()
    
 
     Model* vikingcopy = resourceManager.Get<Model>("model_viking");
-    vikingcopy->Draw(camera);
+    vikingcopy->mesh.Draw(camera);
+
 
 }

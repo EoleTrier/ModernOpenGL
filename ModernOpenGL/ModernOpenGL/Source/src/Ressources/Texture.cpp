@@ -3,7 +3,11 @@
 #include "glad/glad.h"
 #include "Core/Debug/Log.h"
 
-Texture::Texture(const char* filename)
+Texture::Texture()
+{
+}
+
+void Texture::Load(const char* filename)
 {
     glGenTextures(1, &ID);
     glBindTexture(GL_TEXTURE_2D, ID);
@@ -27,3 +31,4 @@ Texture::Texture(const char* filename)
     }
     stbi_image_free(data);
 }
+

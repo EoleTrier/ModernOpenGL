@@ -6,7 +6,11 @@
 
 #include "Ressources/Shader.h"
 
-Shader::Shader(const char* vertexPath, const char* fragmentPath)
+Shader::Shader()
+{
+}
+
+void Shader::SetVertexAndFragmentShader(const char* vertexPath, const char* fragmentPath)
 {
     std::string vertexCode;
     std::string fragmentCode;
@@ -53,7 +57,9 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 
     glDeleteShader(vertex);
     glDeleteShader(fragment);
+
 }
+
 
 void Shader::use()
 {

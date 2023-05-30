@@ -5,7 +5,9 @@
 class Texture : public Resource
 {
 public :
-	Texture(const char* filename);
+	Texture();
 	unsigned int ID;
+
+	void Load(const char* filename);
 
 };

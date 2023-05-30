@@ -21,7 +21,6 @@ public:
 	void Update();
 
 	ResourceManager resourceManager;
-	static unsigned int VBO, VAO;
 
 	static Camera camera;
 	static float lastX, lastY;
@@ -31,10 +30,6 @@ public:
 
 	static float deltaTime;
 	static float lastFrame;
-
-	static unsigned int texture1, texture2;
-
-	static Shader ourShader;
 
 	static Vector3 cubePositions[];
 
