@@ -20,7 +20,7 @@ public:
 
 	void Update();
 
-	ResourceManager resourceManager;
+	static ResourceManager resourceManager;
 
 	static Camera camera;
 	static float lastX, lastY;
@@ -31,7 +31,12 @@ public:
 	static float deltaTime;
 	static float lastFrame;
 
+	static unsigned int cubeVBO, cubeVAO;
+	static unsigned int lightCubeVAO;
+
+
 	static Vector3 cubePositions[];
+	static Vector3 lightPos;
 
 	static float Width, Height;
 	static GLFWwindow* window;

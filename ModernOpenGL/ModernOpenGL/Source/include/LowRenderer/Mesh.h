@@ -16,9 +16,7 @@ public:
 	void Draw(Camera& cam);
 
 private:
-
 	Model* mModel;
 	Shader* mShader;
 	Texture* mTexture;
-
 };

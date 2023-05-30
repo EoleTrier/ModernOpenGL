@@ -16,6 +16,7 @@ public:
 	
 	Matrix4x4 transpose();
 
+	Matrix4x4 translate3D(const Vector3& v);
 	static Matrix4x4 scaling3D(const Vector3& v);
 	static Matrix4x4 rotate3DX(float angle);
 	static Matrix4x4 rotate3DY(float angle);

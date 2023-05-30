@@ -18,15 +18,22 @@ float Application::yaw = 0, Application::pitch = 0;
 bool Application::firstMouse = true;
 Vector3 Application::cameraFront;
 
+ResourceManager Application::resourceManager;
+
 float Application::deltaTime;
 float Application::lastFrame;
 
 float Application::Width = 800;
 float Application::Height = 600;
 
+unsigned int Application::cubeVBO, Application::cubeVAO;
+unsigned int Application::lightCubeVAO;
+
+
+
 GLFWwindow* Application::window;
 
-
+Vector3 Application::lightPos(1.2f, 1.0f, 2.0f);
 
 Application::Application()
 {
@@ -58,10 +65,86 @@ Application::Application()
     glfwSetScrollCallback(window, Application::ScrollCallback);
 
     gladLoadGL();
-
+    glEnable(GL_DEPTH_TEST);
     //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    Shader* shad = resourceManager.Create<Shader>("viking_shader");
+    float vertices[] = {
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+         0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+
+         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+    };
+
+    glGenVertexArrays(1, &cubeVAO);
+    glGenBuffers(1, &cubeVBO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBindVertexArray(cubeVAO);
+
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    // normal attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+
+    // second, configure the light's VAO (cubeVBO stays the same; the vertices are the same for the light object which is also a 3D cube)
+    unsigned int lightCubeVAO;
+    glGenVertexArrays(1, &lightCubeVAO);
+    glBindVertexArray(lightCubeVAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+    // note that we update the lamp's position attribute's stride to reflect the updated buffer data
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    Shader* lightingShader = resourceManager.Create<Shader>("lighting");
+    Shader* lightCubeShader = resourceManager.Create<Shader>("lightCube");
+
+    lightingShader->SetVertexAndFragmentShader("Source/shaders/lighting.vs", "Source/shaders/lighting.fs");
+    lightCubeShader->SetVertexAndFragmentShader("Source/shaders/lightCube.vs", "Source/shaders/lightCube.fs");
+
+    /*Shader* shad = resourceManager.Create<Shader>("viking_shader");
     shad->SetVertexAndFragmentShader("Source/shaders/shader.vs", "Source/shaders/shader.fs");
     Texture* text = resourceManager.Create<Texture>("viking_texture");
     text->Load("Assets/textures/viking_room.jpg");
@@ -69,10 +152,8 @@ Application::Application()
     Model* viking = resourceManager.Create<Model>("model_viking");
     viking->Load("Assets/meshes/viking_room.obj", "Assets/textures/viking_room.jpg");
 
-    Mesh mesh(viking, shad, text);
-    //resourceManager.Delete("model_viking");
+    Mesh mesh(viking, shad, text);*/
 
-    glEnable(GL_DEPTH_TEST);
     float deltaTime = 0;
     float lastFrame = 0;
 
@@ -140,10 +221,46 @@ void Application::Update()
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-   
 
-    Model* vikingcopy = resourceManager.Get<Model>("model_viking");
-    vikingcopy->mesh.Draw(camera);
+    Shader* lighting = resourceManager.Get<Shader>("lighting");
+    Shader* lightCube = resourceManager.Get<Shader>("lightCube");
+    // be sure to activate shader when setting uniforms/drawing objects
+    lighting->use();
+    lighting->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+    lighting->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+    lighting->setVec3("lightPos", lightPos);
+    lighting->setVec3("viewPos", camera.Position);
+
+    // view/projection transformations
+    Matrix4x4 projection = Matrix4x4::PerspectiveProjection(camera.Zoom * ToRadians, 800.f / 600.f, 0.1f, 1000.f);
+    Matrix4x4 view = camera.GetViewMatrix();
+    lighting->setMat4("projection", projection);
+    lighting->setMat4("view", view);
+
+    // world transformation
+    Matrix4x4 model = Matrix4x4::identity();
+    lighting->setMat4("model", model);
+
+
+    // render the cube
+    glBindVertexArray(cubeVAO);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+    // also draw the lamp object
+    lightCube->use();
+    lightCube->setMat4("projection", projection);
+    lightCube->setMat4("view", view);
+    model = Matrix4x4::identity();
+    model = model.translate3D(lightPos);
+    model = model.scaling3D(Vector3(0.2f)); // a smaller cube
+    lightCube->setMat4("model", model);
+
+    glBindVertexArray(lightCubeVAO);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+
+    //Model* vikingcopy = resourceManager.Get<Model>("model_viking");
+    //vikingcopy->mesh.Draw(camera);
 
 
 }
