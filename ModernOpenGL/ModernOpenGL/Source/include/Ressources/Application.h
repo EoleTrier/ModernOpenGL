@@ -20,7 +20,7 @@ public:
 
 	void Update();
 
-	static ResourceManager resourceManager;
+	ResourceManager resourceManager;
 
 	static Camera camera;
 	static float lastX, lastY;

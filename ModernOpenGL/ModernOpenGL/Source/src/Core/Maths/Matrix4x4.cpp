@@ -12,7 +12,6 @@ Matrix4x4::Matrix4x4()
 	}
 }
 
-
 Matrix4x4::Matrix4x4(const std::initializer_list<float> data)
 {
 	std::size_t count = 0;
@@ -36,7 +35,10 @@ Matrix4x4 Matrix4x4::transpose()
 
 Matrix4x4 Matrix4x4::translate3D(const Vector3& v)
 {
-	return Matrix4x4{ mat[0], mat[1], mat[2], v.x, mat[4], mat[5], mat[6], v.y, mat[8], mat[9], mat[10], v.z, mat[12], mat[13], mat[14], mat[15] };
+	return Matrix4x4{ 1, 0, 0, v.x, 
+					  0, 1, 0, v.y, 
+		              0, 0, 1, v.z, 
+					  0, 0, 0, 1 };
 }
 
 
@@ -77,6 +79,12 @@ Matrix4x4 Matrix4x4::rotate3DZ(float angle)
 					   0,  0, 1, 0,
 					   0,  0, 0, 1 };
 }
+
+Matrix4x4 Matrix4x4::rotate(const Vector3& angles)
+{
+	return Matrix4x4::rotate3DX(angles.x) * Matrix4x4::rotate3DY(angles.y) * Matrix4x4::rotate3DZ(angles.z);
+}
+
 Matrix4x4 Matrix4x4::TRS(const Matrix4x4& rota, const Vector3& trans, const Vector3& scale)
 {
 	Matrix4x4 trs = identity();

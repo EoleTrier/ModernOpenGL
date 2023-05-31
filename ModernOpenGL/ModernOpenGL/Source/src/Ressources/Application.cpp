@@ -18,8 +18,6 @@ float Application::yaw = 0, Application::pitch = 0;
 bool Application::firstMouse = true;
 Vector3 Application::cameraFront;
 
-ResourceManager Application::resourceManager;
-
 float Application::deltaTime;
 float Application::lastFrame;
 
@@ -29,6 +27,18 @@ float Application::Height = 600;
 unsigned int Application::cubeVBO, Application::cubeVAO;
 unsigned int Application::lightCubeVAO;
 
+Vector3 Application::cubePositions[] = {
+        Vector3(0.0f,  0.0f,  0.0f),
+        Vector3(2.0f,  5.0f, -15.0f),
+        Vector3(-1.5f, -2.2f, -2.5f),
+        Vector3(-3.8f, -2.0f, -12.3f),
+        Vector3(2.4f, -0.4f, -3.5f),
+        Vector3(-1.7f,  3.0f, -7.5f),
+        Vector3(1.3f, -2.0f, -2.5f),
+        Vector3(1.5f,  2.0f, -2.5f),
+        Vector3(1.5f,  0.2f, -1.5f),
+        Vector3(-1.3f,  1.0f, -1.5f)
+};
 
 
 GLFWwindow* Application::window;
@@ -52,6 +62,7 @@ Application::Application()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+   
     window = glfwCreateWindow(Width, Height, "ModernOpenGL", NULL, NULL);
     if (window == NULL)
     {
@@ -69,48 +80,51 @@ Application::Application()
     //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     float vertices[] = {
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+        // positions          // normals           // texture coords
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+         0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
 
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+         0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
 
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
 
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+         0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
 
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
 
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
     };
+
+
 
     glGenVertexArrays(1, &cubeVAO);
     glGenBuffers(1, &cubeVBO);
@@ -121,22 +135,25 @@ Application::Application()
     glBindVertexArray(cubeVAO);
 
     // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
     // normal attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+    // texture attribute
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
 
-
-    // second, configure the light's VAO (cubeVBO stays the same; the vertices are the same for the light object which is also a 3D cube)
-    unsigned int lightCubeVAO;
     glGenVertexArrays(1, &lightCubeVAO);
     glBindVertexArray(lightCubeVAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
     // note that we update the lamp's position attribute's stride to reflect the updated buffer data
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+
+    Texture* text = resourceManager.Create<Texture>("viking_texture");
+    text->Load("Assets/textures/viking_room.jpg");
 
     Shader* lightingShader = resourceManager.Create<Shader>("lighting");
     Shader* lightCubeShader = resourceManager.Create<Shader>("lightCube");
@@ -144,16 +161,20 @@ Application::Application()
     lightingShader->SetVertexAndFragmentShader("Source/shaders/lighting.vs", "Source/shaders/lighting.fs");
     lightCubeShader->SetVertexAndFragmentShader("Source/shaders/lightCube.vs", "Source/shaders/lightCube.fs");
 
-    /*Shader* shad = resourceManager.Create<Shader>("viking_shader");
+    lightingShader->use();
+    lightingShader->setInt("material.diffuse", 0);
+    lightingShader->setInt("material.specular", 1);
+    /*
+    Shader* shad = resourceManager.Create<Shader>("viking_shader");
     shad->SetVertexAndFragmentShader("Source/shaders/shader.vs", "Source/shaders/shader.fs");
-    Texture* text = resourceManager.Create<Texture>("viking_texture");
-    text->Load("Assets/textures/viking_room.jpg");
+    Texture* text2 = resourceManager.Create<Texture>("viking_texture");
+    text2->Load("Assets/textures/viking_room.jpg");
 
     Model* viking = resourceManager.Create<Model>("model_viking");
     viking->Load("Assets/meshes/viking_room.obj", "Assets/textures/viking_room.jpg");
 
-    Mesh mesh(viking, shad, text);*/
-
+    Mesh mesh(viking, shad, text2);
+    */
     float deltaTime = 0;
     float lastFrame = 0;
 
@@ -205,7 +226,9 @@ void Application::ProcessInput(GLFWwindow* window, float deltaTime)
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
         camera.ProcessKeyboard(CameraMovement::LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    {
         camera.ProcessKeyboard(CameraMovement::RIGHT, deltaTime);
+    }
 }
 
 void Application::Update()
@@ -221,46 +244,69 @@ void Application::Update()
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
+    
     Shader* lighting = resourceManager.Get<Shader>("lighting");
     Shader* lightCube = resourceManager.Get<Shader>("lightCube");
     // be sure to activate shader when setting uniforms/drawing objects
     lighting->use();
-    lighting->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-    lighting->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-    lighting->setVec3("lightPos", lightPos);
+
+    lighting->setVec3("light.position", camera.Position);
+    lighting->setVec3("light.direction", camera.Front);
+    lighting->setFloat("light.cutOff", cos(ToRadians * 12.5f));
     lighting->setVec3("viewPos", camera.Position);
 
-    // view/projection transformations
+    lighting->setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+    lighting->setVec3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
+    lighting->setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+
+    lighting->setFloat("light.constant", 1.0f);
+    lighting->setFloat("light.linear", 0.09f);
+    lighting->setFloat("light.quadratic", 0.032f);
+
+    lighting->setFloat("material.shininess", 32.0f);
+
     Matrix4x4 projection = Matrix4x4::PerspectiveProjection(camera.Zoom * ToRadians, 800.f / 600.f, 0.1f, 1000.f);
     Matrix4x4 view = camera.GetViewMatrix();
     lighting->setMat4("projection", projection);
     lighting->setMat4("view", view);
 
+    // view/projection transformations
+
     // world transformation
     Matrix4x4 model = Matrix4x4::identity();
     lighting->setMat4("model", model);
 
+    Texture* diffuseMap = resourceManager.Get<Texture>("viking_texture");
+    Texture* specularMap = resourceManager.Get<Texture>("viking_texture");
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, diffuseMap->ID);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, specularMap->ID);
 
     // render the cube
     glBindVertexArray(cubeVAO);
-    glDrawArrays(GL_TRIANGLES, 0, 36);
+    for (unsigned int i = 0; i < 10; i++)
+    {
+        Matrix4x4 model = Matrix4x4::identity();
+        model = model * Matrix4x4::translate3D(cubePositions[i]);
+        float angle = 20.0f * i;
+        model = model * Matrix4x4::rotate(Vector3(ToRadians * angle, 0, 0));
+        lighting->setMat4("model", model);
 
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
 
-    // also draw the lamp object
     lightCube->use();
     lightCube->setMat4("projection", projection);
     lightCube->setMat4("view", view);
-    model = Matrix4x4::identity();
-    model = model.translate3D(lightPos);
-    model = model.scaling3D(Vector3(0.2f)); // a smaller cube
+   
+    model = model * Matrix4x4::TRS(Vector3(0), lightPos, Vector3(0.2f)); // a smaller cube
     lightCube->setMat4("model", model);
 
     glBindVertexArray(lightCubeVAO);
     glDrawArrays(GL_TRIANGLES, 0, 36);
-
     //Model* vikingcopy = resourceManager.Get<Model>("model_viking");
     //vikingcopy->mesh.Draw(camera);
-
 
 }
