@@ -3,20 +3,23 @@
 #include "LowRenderer/Light.h"
 #include "LowRenderer/Camera.h"
 
-class SpotLight : Light
+class SpotLight : public Light
 {
+public:
+    int ID;
+
     void SetSpotLight(Shader* shader, const Vector3& position, const Vector3& direction, const float constant, const float linear,
         const float quadratic, const float cutOff, const float outerCutOff)
     {
-        shader->setVec3("spotLight.position", position);
-        shader->setVec3("spotLight.direction", direction);
-        shader->setVec3("spotLight.ambient", ambientColor);
-        shader->setVec3("spotLight.diffuse", diffuseColor);
-        shader->setVec3("spotLight.specular", specularColor);
-        shader->setFloat("spotLight.constant", constant);
-        shader->setFloat("spotLight.linear", linear);
-        shader->setFloat("spotLight.quadratic", quadratic);
-        shader->setFloat("spotLight.cutOff", cos(ToRadians * cutOff));
-        shader->setFloat("spotLight.outerCutOff", cos(ToRadians * outerCutOff));
+        shader->setVec3("spotLights[0].position", position);
+        shader->setVec3("spotLights[0].direction", direction);
+        shader->setVec3("spotLights[0].ambient", ambientColor);
+        shader->setVec3("spotLights[0].diffuse", diffuseColor);
+        shader->setVec3("spotLights[0].specular", specularColor);
+        shader->setFloat("spotLights[0].constant", constant);
+        shader->setFloat("spotLights[0].linear", linear);
+        shader->setFloat("spotLights[0].quadratic", quadratic);
+        shader->setFloat("spotLights[0].cutOff", cos(ToRadians * cutOff));
+        shader->setFloat("spotLights[0].outerCutOff", cos(ToRadians * outerCutOff));
     }
 };

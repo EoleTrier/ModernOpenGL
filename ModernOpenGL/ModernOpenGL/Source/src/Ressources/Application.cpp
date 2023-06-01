@@ -10,7 +10,9 @@
 #include "Core/Debug/Assertion.h"
 #include "Core/Debug/Log.h"
 #include "LowRenderer/Mesh.h"
-
+#include "LowRenderer/Light/Directional.h"
+#include "LowRenderer/Light/Point.h"
+#include "LowRenderer/Light/Spot.h"
 
 Camera Application::camera(Vector3(0.0f, 0.0f, 3.0f));
 float Application::lastX = 400, Application::lastY = 300;
@@ -240,6 +242,7 @@ void Application::ProcessInput(GLFWwindow* window, float deltaTime)
     }
 }
 
+
 void Application::Update()
 {
     float currentFrame = static_cast<float>(glfwGetTime());
@@ -253,7 +256,7 @@ void Application::Update()
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    
+
     Shader* lighting = resourceManager.Get<Shader>("lighting");
     Shader* lightCube = resourceManager.Get<Shader>("lightCube");
     // be sure to activate shader when setting uniforms/drawing objects
@@ -301,7 +304,13 @@ void Application::Update()
     lighting->setFloat("pointLights[3].linear", 0.09f);
     lighting->setFloat("pointLights[3].quadratic", 0.032f);
     // spotLight
-    lighting->setVec3("spotLights[0].position", camera.Position);
+    SpotLight spot(Vector3(1.0f, 1.0f, 1.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f));
+    spot.ID = 0;
+    spot.ambientColor = 0.0f, 0.0f, 0.0f;
+    spot.diffuseColor = 1.0f, 1.0f, 1.0f;
+    spot.specularColor = 1.0f, 1.0f, 1.0f;
+    spot.SetSpotLight(lighting, camera.Position, camera.Front, 1.0f, 0.09f, 0.032f, 12.5f, 15.0f);
+    /*lighting->setVec3("spotLights[0].position", camera.Position);
     lighting->setVec3("spotLights[0].direction", camera.Front);
     lighting->setVec3("spotLights[0].ambient", 0.0f, 0.0f, 0.0f);
     lighting->setVec3("spotLights[0].diffuse", 1.0f, 1.0f, 1.0f);
@@ -310,7 +319,7 @@ void Application::Update()
     lighting->setFloat("spotLights[0].linear", 0.09f);
     lighting->setFloat("spotLights[0].quadratic", 0.032f);
     lighting->setFloat("spotLights[0].cutOff", cos(ToRadians * 12.5f));
-    lighting->setFloat("spotLights[0].outerCutOff", cos(ToRadians * 15.0f));
+    lighting->setFloat("spotLights[0].outerCutOff", cos(ToRadians * 15.0f));*/
 
 
     Matrix4x4 projection = Matrix4x4::PerspectiveProjection(camera.Zoom * ToRadians, 800.f / 600.f, 0.1f, 1000.f);
