@@ -60,6 +60,11 @@ void Shader::SetVertexAndFragmentShader(const char* vertexPath, const char* frag
 
 }
 
+void Shader::SetViewPos(const Vector3& viewPos)
+{
+    setVec3("viewPos", viewPos);
+}
+
 
 void Shader::use()
 {
@@ -108,6 +113,7 @@ void Shader::setMat4(const std::string& name, const Matrix4x4& mat) const
     glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_TRUE, &mat.mat[0]);
 }
 
+
 void Shader::checkCompileErrors(unsigned int shader, std::string type)
 {
     int success;
@@ -115,6 +121,7 @@ void Shader::checkCompileErrors(unsigned int shader, std::string type)
     if (type != "PROGRAM")
     {
         glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+
         if (!success)
         {
             glGetShaderInfoLog(shader, 1024, NULL, infoLog);

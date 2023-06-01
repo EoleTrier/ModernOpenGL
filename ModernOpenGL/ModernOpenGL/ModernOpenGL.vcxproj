@@ -41,6 +41,9 @@
     <ClInclude Include="Source\include\Core\Maths\Vector4.h" />
     <ClInclude Include="Source\include\LowRenderer\Camera.h" />
     <ClInclude Include="Source\include\LowRenderer\Light.h" />
+    <ClInclude Include="Source\include\LowRenderer\Light\Directional.h" />
+    <ClInclude Include="Source\include\LowRenderer\Light\Point.h" />
+    <ClInclude Include="Source\include\LowRenderer\Light\Spot.h" />
     <ClInclude Include="Source\include\LowRenderer\Mesh.h" />
     <ClInclude Include="Source\include\Physics\Transform.h" />
     <ClInclude Include="Source\include\Ressources\Application.h" />

@@ -10,7 +10,7 @@ class Shader : public Resource
 public:
     Shader();
     void SetVertexAndFragmentShader(const char* vertexPath, const char* fragmentPath);
-    
+    void SetViewPos(const Vector3& viewPos);
 
     void use();
     void setBool(const std::string& name, bool value) const;

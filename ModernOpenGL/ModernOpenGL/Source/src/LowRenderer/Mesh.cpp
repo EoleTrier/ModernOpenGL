@@ -26,6 +26,7 @@ Mesh::Mesh(Model* const model, Shader* const shader, Texture* const texture)
     
     glBindVertexArray(0);
 
+
     mModel->mesh = *this;
 }
 

@@ -36,6 +36,8 @@ public:
 
 
 	static Vector3 cubePositions[];
+	static Vector3 pointLightPositions[];
+	
 	static Vector3 lightPos;
 
 	static float Width, Height;
