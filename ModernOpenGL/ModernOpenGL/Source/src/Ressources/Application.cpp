@@ -262,72 +262,33 @@ void Application::Update()
     // be sure to activate shader when setting uniforms/drawing objects
     lighting->use();
 
-    //lighting->SetViewPos(camera.Position);
-    lighting->setVec3("viewPos", camera.Position);
+    lighting->SetViewPos(camera.Position);
     lighting->setFloat("material.shininess", 32.0f);
 
     // directional light
-    lighting->setVec3("dirLights[0].direction", -0.2f, -1.0f, -0.3f);
-    lighting->setVec3("dirLights[0].ambient", 0.05f, 0.05f, 0.05f);
-    lighting->setVec3("dirLights[0].diffuse", 0.4f, 0.4f, 0.4f);
-    lighting->setVec3("dirLights[0].specular", 0.5f, 0.5f, 0.5f);
+    DirectionalLight dir1(Vector3(0.4f), Vector3(0.05f), Vector3(0.5f), 0); 
+    dir1.SetDirectionalLight(lighting, Vector3(-0.2f, -1.0f, -0.3f));
     // point light 1
-    lighting->setVec3("pointLights[0].position", pointLightPositions[0]);
-    lighting->setVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
-    lighting->setVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
-    lighting->setVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
-    lighting->setFloat("pointLights[0].constant", 1.0f);
-    lighting->setFloat("pointLights[0].linear", 0.09f);
-    lighting->setFloat("pointLights[0].quadratic", 0.032f);
+    PointLight point1(Vector3(0.8f), Vector3(0.05f), Vector3(1.0f), 0);
+    point1.SetPointLight(lighting, pointLightPositions[0], 1.0f, 0.09f, 0.032f);
     // point light 2
-    lighting->setVec3("pointLights[1].position", pointLightPositions[1]);
-    lighting->setVec3("pointLights[1].ambient", 0.05f, 0.05f, 0.05f);
-    lighting->setVec3("pointLights[1].diffuse", 0.8f, 0.8f, 0.8f);
-    lighting->setVec3("pointLights[1].specular", 1.0f, 1.0f, 1.0f);
-    lighting->setFloat("pointLights[1].constant", 1.0f);
-    lighting->setFloat("pointLights[1].linear", 0.09f);
-    lighting->setFloat("pointLights[1].quadratic", 0.032f);
+    PointLight point2(Vector3(0.8f), Vector3(0.05f), Vector3(1.0f), 1);
+    point2.SetPointLight(lighting, pointLightPositions[1], 1.0f, 0.09f, 0.032f);
     // point light 3
-    lighting->setVec3("pointLights[2].position", pointLightPositions[2]);
-    lighting->setVec3("pointLights[2].ambient", 0.05f, 0.05f, 0.05f);
-    lighting->setVec3("pointLights[2].diffuse", 0.8f, 0.8f, 0.8f);
-    lighting->setVec3("pointLights[2].specular", 1.0f, 1.0f, 1.0f);
-    lighting->setFloat("pointLights[2].constant", 1.0f);
-    lighting->setFloat("pointLights[2].linear", 0.09f);
-    lighting->setFloat("pointLights[2].quadratic", 0.032f);
+    PointLight point3(Vector3(0.8f), Vector3(0.05f), Vector3(1.0f), 2);
+    point3.SetPointLight(lighting, pointLightPositions[2], 1.0f, 0.09f, 0.032f);
     // point light 4
-    lighting->setVec3("pointLights[3].position", pointLightPositions[3]);
-    lighting->setVec3("pointLights[3].ambient", 0.05f, 0.05f, 0.05f);
-    lighting->setVec3("pointLights[3].diffuse", 0.8f, 0.8f, 0.8f);
-    lighting->setVec3("pointLights[3].specular", 1.0f, 1.0f, 1.0f);
-    lighting->setFloat("pointLights[3].constant", 1.0f);
-    lighting->setFloat("pointLights[3].linear", 0.09f);
-    lighting->setFloat("pointLights[3].quadratic", 0.032f);
+    PointLight point4(Vector3(0.8f), Vector3(0.05f), Vector3(1.0f), 3);
+    point4.SetPointLight(lighting, pointLightPositions[3], 1.0f, 0.09f, 0.032f);
     // spotLight
-    SpotLight spot(Vector3(1.0f, 1.0f, 1.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f));
-    spot.ID = 0;
-    spot.ambientColor = 0.0f, 0.0f, 0.0f;
-    spot.diffuseColor = 1.0f, 1.0f, 1.0f;
-    spot.specularColor = 1.0f, 1.0f, 1.0f;
-    spot.SetSpotLight(lighting, camera.Position, camera.Front, 1.0f, 0.09f, 0.032f, 12.5f, 15.0f);
-    /*lighting->setVec3("spotLights[0].position", camera.Position);
-    lighting->setVec3("spotLights[0].direction", camera.Front);
-    lighting->setVec3("spotLights[0].ambient", 0.0f, 0.0f, 0.0f);
-    lighting->setVec3("spotLights[0].diffuse", 1.0f, 1.0f, 1.0f);
-    lighting->setVec3("spotLights[0].specular", 1.0f, 1.0f, 1.0f);
-    lighting->setFloat("spotLights[0].constant", 1.0f);
-    lighting->setFloat("spotLights[0].linear", 0.09f);
-    lighting->setFloat("spotLights[0].quadratic", 0.032f);
-    lighting->setFloat("spotLights[0].cutOff", cos(ToRadians * 12.5f));
-    lighting->setFloat("spotLights[0].outerCutOff", cos(ToRadians * 15.0f));*/
+    SpotLight spot1(Vector3(1.0f), Vector3(0.0f), Vector3(1.0f), 0);
+    spot1.SetSpotLight(lighting, camera.Position, camera.Front, 1.0f, 0.09f, 0.032f, 12.5f, 15.0f);
 
 
     Matrix4x4 projection = Matrix4x4::PerspectiveProjection(camera.Zoom * ToRadians, 800.f / 600.f, 0.1f, 1000.f);
     Matrix4x4 view = camera.GetViewMatrix();
     lighting->setMat4("projection", projection);
     lighting->setMat4("view", view);
-
-    // view/projection transformations
 
     // world transformation
     Matrix4x4 model = Matrix4x4::identity();
@@ -341,7 +302,6 @@ void Application::Update()
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, specularMap->ID);
 
-    // render the cube
     glBindVertexArray(cubeVAO);
     for (unsigned int i = 0; i < 10; i++)
     {

@@ -7,7 +7,7 @@
 class Light
 {
 public:
-	Light(const Vector3& diffuse, const Vector3& ambient, const Vector3& specular);
+	Light() {};
 	
 	Vector3 diffuseColor;
 	Vector3 ambientColor;
