@@ -75,7 +75,7 @@ Application::Application()
     window = glfwCreateWindow(Width, Height, "ModernOpenGL", NULL, NULL);
     if (window == NULL)
     {
-        std::cout << "Failed to create GLFW window" << std::endl;
+        Log::Print("Failed to create GLFW window");
         glfwTerminate();
     }
 
@@ -91,7 +91,6 @@ Application::Application()
     //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     float vertices[] = {
-        // positions          // normals           // texture coords
         -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
          0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
          0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
@@ -145,13 +144,12 @@ Application::Application()
 
     glBindVertexArray(cubeVAO);
 
-    // position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    // normal attribute
+
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
-    // texture attribute
+
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
@@ -159,7 +157,6 @@ Application::Application()
     glBindVertexArray(lightCubeVAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
-    // note that we update the lamp's position attribute's stride to reflect the updated buffer data
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
@@ -215,7 +212,7 @@ void Application::MouseCallback(GLFWwindow* window, double xposIn, double yposIn
     }
 
     float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+    float yoffset = lastY - ypos; 
 
     lastX = xpos;
     lastY = ypos;
@@ -249,8 +246,6 @@ void Application::Update()
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
-    // input
-    // -----
     ProcessInput(window, deltaTime);
 
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -259,30 +254,29 @@ void Application::Update()
 
     Shader* lighting = resourceManager.Get<Shader>("lighting");
     Shader* lightCube = resourceManager.Get<Shader>("lightCube");
-    // be sure to activate shader when setting uniforms/drawing objects
     lighting->use();
 
     lighting->SetViewPos(camera.Position);
     lighting->setFloat("material.shininess", 32.0f);
 
     // directional light
-    DirectionalLight dir1(Vector3(0.4f), Vector3(0.05f), Vector3(0.5f), 0); 
-    dir1.SetDirectionalLight(lighting, Vector3(-0.2f, -1.0f, -0.3f));
+    DirectionalLight dir1(Vector3(0.4f), Vector3(0.05f), Vector3(0.5f), Vector3(-0.2f, -1.0f, -0.3f), 0);
+    dir1.SetDirectionalLight(lighting);
     // point light 1
-    PointLight point1(Vector3(0.8f), Vector3(0.05f), Vector3(1.0f), 0);
-    point1.SetPointLight(lighting, pointLightPositions[0], 1.0f, 0.09f, 0.032f);
+    PointLight point1(Vector3(0.8f), Vector3(0.05f), Vector3(1.0f), pointLightPositions[0], 1.0f, 0.09f, 0.032f, 0);
+    point1.SetPointLight(lighting);
     // point light 2
-    PointLight point2(Vector3(0.8f), Vector3(0.05f), Vector3(1.0f), 1);
-    point2.SetPointLight(lighting, pointLightPositions[1], 1.0f, 0.09f, 0.032f);
+    PointLight point2(Vector3(0.8f), Vector3(0.05f), Vector3(1.0f), pointLightPositions[1], 1.0f, 0.09f, 0.032f, 1);
+    point2.SetPointLight(lighting);
     // point light 3
-    PointLight point3(Vector3(0.8f), Vector3(0.05f), Vector3(1.0f), 2);
-    point3.SetPointLight(lighting, pointLightPositions[2], 1.0f, 0.09f, 0.032f);
+    PointLight point3(Vector3(0.8f), Vector3(0.05f), Vector3(1.0f), pointLightPositions[2], 1.0f, 0.09f, 0.032f, 2);
+    point3.SetPointLight(lighting);
     // point light 4
-    PointLight point4(Vector3(0.8f), Vector3(0.05f), Vector3(1.0f), 3);
-    point4.SetPointLight(lighting, pointLightPositions[3], 1.0f, 0.09f, 0.032f);
+    PointLight point4(Vector3(0.8f), Vector3(0.05f), Vector3(1.0f), pointLightPositions[3], 1.0f, 0.09f, 0.032f, 3);
+    point4.SetPointLight(lighting);
     // spotLight
-    SpotLight spot1(Vector3(1.0f), Vector3(0.0f), Vector3(1.0f), 0);
-    spot1.SetSpotLight(lighting, camera.Position, camera.Front, 1.0f, 0.09f, 0.032f, 12.5f, 15.0f);
+    SpotLight spot1(Vector3(1.0f), Vector3(0.0f), Vector3(1.0f), camera.Position, camera.Front, 1.0f, 0.09f, 0.032f, 12.5f, 15.0f, 0);
+    spot1.SetSpotLight(lighting);
 
 
     Matrix4x4 projection = Matrix4x4::PerspectiveProjection(camera.Zoom * ToRadians, 800.f / 600.f, 0.1f, 1000.f);
@@ -290,7 +284,6 @@ void Application::Update()
     lighting->setMat4("projection", projection);
     lighting->setMat4("view", view);
 
-    // world transformation
     Matrix4x4 model = Matrix4x4::identity();
     lighting->setMat4("model", model);
 

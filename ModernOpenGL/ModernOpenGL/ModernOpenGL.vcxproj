@@ -64,12 +64,14 @@
     <ClCompile Include="Source\src\Core\Maths\Vector4.cpp" />
     <ClCompile Include="Source\src\LowRenderer\Camera.cpp" />
     <ClCompile Include="Source\src\LowRenderer\Light.cpp" />
+    <ClCompile Include="Source\src\LowRenderer\Light\Directional.cpp" />
+    <ClCompile Include="Source\src\LowRenderer\Light\Point.cpp" />
+    <ClCompile Include="Source\src\LowRenderer\Light\Spot.cpp" />
     <ClCompile Include="Source\src\LowRenderer\Mesh.cpp" />
     <ClCompile Include="Source\src\main.cpp" />
     <ClCompile Include="Source\src\Physics\Transform.cpp" />
     <ClCompile Include="Source\src\Ressources\Application.cpp" />
     <ClCompile Include="Source\src\Ressources\Model.cpp" />
-    <ClCompile Include="Source\src\Ressources\ResourceManager.cpp" />
     <ClCompile Include="Source\src\Ressources\Scene.cpp" />
     <ClCompile Include="Source\src\Ressources\Shader.cpp" />
     <ClCompile Include="Source\src\Ressources\Texture.cpp" />

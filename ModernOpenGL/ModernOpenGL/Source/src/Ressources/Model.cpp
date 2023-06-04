@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 #include "Ressources/Model.h"
-
+#include "Core/Debug/Log.h"
 
 #include "Image/stb_image.h"
 #include "glad/glad.h"
@@ -25,7 +25,7 @@ void Model::Load(const char* modelPath, const char* texturePath)
 
     if (!file.is_open())
     {
-        std::cout << "Cannot open the file: " << modelPath << std::endl;
+        Log::Print("Cannot open the file: %s", modelPath);
         return;
     }
 

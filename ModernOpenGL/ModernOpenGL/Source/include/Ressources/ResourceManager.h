@@ -39,3 +39,4 @@ inline void ResourceManager::Delete(std::string name)
 	Resources.erase(name);
 }
 
+
