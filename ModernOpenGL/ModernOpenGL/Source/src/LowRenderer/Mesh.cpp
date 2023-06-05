@@ -27,23 +27,23 @@ Mesh::Mesh(Model* const model, Shader* const shader, Texture* const texture)
     glBindVertexArray(0);
 
 
-    mModel->mesh = *this;
+    mModel->mesh = this;
 }
 
 Mesh::~Mesh()
 {
-    //glDeleteVertexArrays(1, &mModel->VAO);
-    //glDeleteBuffers(1, &mModel->VBO);
+    glDeleteVertexArrays(1, &mModel->VAO);
+    glDeleteBuffers(1, &mModel->VBO);
 }
 
-void Mesh::Draw(Camera& cam)
+void Mesh::Draw(Camera& cam, const Matrix4x4& localModel)
 {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, mTexture->ID);
 
     mShader->use();
 
-    Matrix4x4 model = Matrix4x4::identity();
+    Matrix4x4 model = localModel;
     Matrix4x4 view = cam.GetViewMatrix();
     Matrix4x4 projection = Matrix4x4::PerspectiveProjection(cam.Zoom * ToRadians, 800.f / 600.f, 0.1f, 1000.f);
 

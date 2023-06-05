@@ -39,6 +39,7 @@
     <ClInclude Include="Source\include\Core\Maths\Vector2.h" />
     <ClInclude Include="Source\include\Core\Maths\Vector3.h" />
     <ClInclude Include="Source\include\Core\Maths\Vector4.h" />
+    <ClInclude Include="Source\include\Core\Object.h" />
     <ClInclude Include="Source\include\LowRenderer\Camera.h" />
     <ClInclude Include="Source\include\LowRenderer\Light.h" />
     <ClInclude Include="Source\include\LowRenderer\Light\Directional.h" />
@@ -62,6 +63,7 @@
     <ClCompile Include="Source\src\Core\Maths\Vector2.cpp" />
     <ClCompile Include="Source\src\Core\Maths\Vector3.cpp" />
     <ClCompile Include="Source\src\Core\Maths\Vector4.cpp" />
+    <ClCompile Include="Source\src\Core\Object.cpp" />
     <ClCompile Include="Source\src\LowRenderer\Camera.cpp" />
     <ClCompile Include="Source\src\LowRenderer\Light.cpp" />
     <ClCompile Include="Source\src\LowRenderer\Light\Directional.cpp" />

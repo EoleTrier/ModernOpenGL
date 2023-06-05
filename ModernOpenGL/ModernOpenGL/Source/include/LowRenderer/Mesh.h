@@ -3,7 +3,6 @@
 #include "Ressources/Texture.h"
 #include "LowRenderer/Camera.h"
 #include "Ressources/Shader.h"
-#include "Physics/Transform.h"
 
 class Model;
 
@@ -14,7 +13,7 @@ public:
 	Mesh(Model* const model, Shader* const shader, Texture* const texture);
 	~Mesh();
 
-	void Draw(Camera& cam);
+	void Draw(Camera& cam, const Matrix4x4& localModel);
 
 private:
 	Model* mModel;

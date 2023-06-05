@@ -14,6 +14,12 @@ Model::Model()
     VAO = 0;
 }
 
+Model::~Model()
+{
+    if (mesh)
+        delete mesh;
+}
+
 void Model::Load(const char* modelPath, const char* texturePath)
 {
     std::ifstream file;
@@ -73,6 +79,7 @@ void Model::Load(const char* modelPath, const char* texturePath)
             vertices.push_back(v3);
         }
     }
+    Log::Print("Succeed to load model: %s", modelPath);
 }
 
 

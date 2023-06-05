@@ -7,7 +7,7 @@
 #include "Ressources/Shader.h"
 #include "LowRenderer/Camera.h"
 #include "LowRenderer/Mesh.h"
-
+#include "Core/Object.h"
 struct Vertex
 {
 	Vector3 Position;
@@ -19,9 +19,10 @@ class Model : public Resource
 {
 public:
 	unsigned int VAO, VBO;
-	Mesh mesh;
+	Mesh* mesh;
 
 	Model();
+	~Model();
 	std::vector<Vertex> vertices;
     void Load(const char* modelPath, const char* texturePath);
 	

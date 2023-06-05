@@ -6,10 +6,13 @@
 #include "Core/Maths/Matrix4x4.h"
 #include "Ressources/Shader.h"
 #include "Ressources/ResourceManager.h"
+#include "Core/Object.h"
 
 class Application
 {
 public:
+
+	static Object* world;
 	Application();
 	~Application();
 
@@ -33,7 +36,6 @@ public:
 
 	static unsigned int cubeVBO, cubeVAO;
 	static unsigned int lightCubeVAO;
-
 
 	static Vector3 cubePositions[];
 	static Vector3 pointLightPositions[];

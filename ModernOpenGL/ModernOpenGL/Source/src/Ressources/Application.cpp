@@ -14,6 +14,8 @@
 #include "LowRenderer/Light/Point.h"
 #include "LowRenderer/Light/Spot.h"
 
+Object* Application::world;
+
 Camera Application::camera(Vector3(0.0f, 0.0f, 3.0f));
 float Application::lastX = 400, Application::lastY = 300;
 float Application::yaw = 0, Application::pitch = 0;
@@ -89,7 +91,7 @@ Application::Application()
 
 
     //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
+    /*
     float vertices[] = {
         -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
          0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
@@ -134,8 +136,6 @@ Application::Application()
         -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
     };
 
-
-
     glGenVertexArrays(1, &cubeVAO);
     glGenBuffers(1, &cubeVBO);
 
@@ -159,10 +159,9 @@ Application::Application()
     glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+    */
 
-    Texture* text = resourceManager.Create<Texture>("viking_texture");
-    text->Load("Assets/textures/viking_room.jpg");
-
+    /*
     Shader* lightingShader = resourceManager.Create<Shader>("lighting");
     Shader* lightCubeShader = resourceManager.Create<Shader>("lightCube");
 
@@ -172,20 +171,40 @@ Application::Application()
     lightingShader->use();
     lightingShader->setInt("material.diffuse", 0);
     lightingShader->setInt("material.specular", 1);
-    /*
+
+*/    
     Shader* shad = resourceManager.Create<Shader>("viking_shader");
     shad->SetVertexAndFragmentShader("Source/shaders/shader.vs", "Source/shaders/shader.fs");
-    Texture* text2 = resourceManager.Create<Texture>("viking_texture");
-    text2->Load("Assets/textures/viking_room.jpg");
+    Texture* text = resourceManager.Create<Texture>("viking_texture");
+    text->Load("Assets/textures/viking_room.jpg");
+   
 
     Model* viking = resourceManager.Create<Model>("model_viking");
     viking->Load("Assets/meshes/viking_room.obj", "Assets/textures/viking_room.jpg");
+    
+    viking->mesh = new Mesh(viking, shad, text);
+    Mesh* vikingMesh = viking->mesh;
+    
+    world = new Object();
+    Object* v = new Object();
+    Object* v1 = new Object();
+    Object* v2 = new Object();
 
-    Mesh mesh(viking, shad, text2);
-    */
+    v->mesh = vikingMesh;
+    v1->mesh = vikingMesh;
+    v2->mesh = vikingMesh;
+
+    v->tranform.Position = 0;
+    v1->tranform.Position = Vector3(-1.3f, 0, 0);
+    v2->tranform.Position = Vector3(1.3f, 0, 0);
+   
+    world->tranform.AddChild(&v->tranform);
+    v->tranform.AddChild(&v1->tranform);
+    v->tranform.AddChild(&v2->tranform);
+   
+
     float deltaTime = 0;
     float lastFrame = 0;
-
 }
 
 Application::~Application()
@@ -239,7 +258,7 @@ void Application::ProcessInput(GLFWwindow* window, float deltaTime)
     }
 }
 
-
+void Draw(Object* obj, Camera& camera);
 void Application::Update()
 {
     float currentFrame = static_cast<float>(glfwGetTime());
@@ -251,7 +270,7 @@ void Application::Update()
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
+    /*
     Shader* lighting = resourceManager.Get<Shader>("lighting");
     Shader* lightCube = resourceManager.Get<Shader>("lightCube");
     lighting->use();
@@ -277,7 +296,7 @@ void Application::Update()
     // spotLight
     SpotLight spot1(Vector3(1.0f), Vector3(0.0f), Vector3(1.0f), camera.Position, camera.Front, 1.0f, 0.09f, 0.032f, 12.5f, 15.0f, 0);
     spot1.SetSpotLight(lighting);
-
+    
 
     Matrix4x4 projection = Matrix4x4::PerspectiveProjection(camera.Zoom * ToRadians, 800.f / 600.f, 0.1f, 1000.f);
     Matrix4x4 view = camera.GetViewMatrix();
@@ -317,8 +336,22 @@ void Application::Update()
         Matrix4x4 model = Matrix4x4::TRS(Vector3(0), Vector3(pointLightPositions[i]), Vector3(0.2f));
         lightCube->setMat4("model", model);
         glDrawArrays(GL_TRIANGLES, 0, 36);
-    }
-    //Model* vikingcopy = resourceManager.Get<Model>("model_viking");
-    //vikingcopy->mesh.Draw(camera);
+    }*/
 
+    world->tranform.Rotation.z += 0.01f;
+    world->tranform.UpdateSelfAndChilds();
+    Draw(world, camera);
+}
+
+void Draw(Object* obj, Camera& camera)
+{
+    if (obj->mesh)
+        obj->mesh->Draw(camera, obj->tranform.GlobalModel);
+
+    for (Transform* const t : obj->tranform.Childs)
+    {
+        Object* o = t->object;
+
+        Draw(o, camera);
+    }
 }

@@ -117,6 +117,9 @@
     <ClInclude Include="Source\include\LowRenderer\Light\Spot.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="Source\include\Core\Object.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\src\Core\DataStructure\Graph.cpp">
@@ -177,6 +180,9 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Source\src\LowRenderer\Light\Directional.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\src\Core\Object.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
