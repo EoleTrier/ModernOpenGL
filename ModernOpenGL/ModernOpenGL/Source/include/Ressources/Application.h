@@ -12,27 +12,25 @@ class Application
 {
 public:
 	static Object* world;
-	ResourceManager resourceManager;
-	static Camera camera;
-	static float lastX, lastY;
-	static float yaw, pitch;
-	static bool firstMouse;
-	static Vector3 cameraFront;
-	static float deltaTime;
-	static float lastFrame;
-	static float Width, Height;
 	static GLFWwindow* window;
-
 	Application();
 	~Application();
+	void Update();
+
+private:
+	ResourceManager mResourceManager;
+	static Camera mCamera;
+	static float mLastX, mLastY;
+	static float mYaw, mPitch;
+	static bool mFirstMouse;
+	static Vector3 mCameraFront;
+	static float mDeltaTime;
+	static float mLastFrame;
+	static float mWidth, mHeight;
 
 	static void ResizeCallback(GLFWwindow* window, int width, int height);
 	static void MouseCallback(GLFWwindow* window, double xposIn, double yposIn);
 	static void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
 	void ProcessInput(GLFWwindow* window, float deltaTime);
 
-	void Update();
-
-
-private:
 };
