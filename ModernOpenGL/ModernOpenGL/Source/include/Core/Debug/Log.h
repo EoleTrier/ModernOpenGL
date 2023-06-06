@@ -15,5 +15,5 @@ public:
 	static void Print(const char* format, ...);
 
 private:
-	static std::fstream m_File;
+	static std::fstream mFile;
 };

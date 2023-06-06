@@ -6,16 +6,16 @@ class Object;
 class Transform
 {
 public:
-    Transform() {};
+    Transform();
     Transform(const Matrix4x4& localModel);
     Object* object;
-    Transform* Parent;
-    std::vector<Transform*> Childs;
-	Matrix4x4 LocalModel;
-	Matrix4x4 GlobalModel;
-    Vector3 Position;
-    Vector3 Rotation;
-    Vector3 Scaling;
+    Transform* parent;
+    std::vector<Transform*> childs;
+	Matrix4x4 localModel;
+	Matrix4x4 globalModel;
+    Vector3 position;
+    Vector3 rotation;
+    Vector3 scaling;
 
     void UpdateSelfAndChilds();
     void AddChild(Transform* const t);

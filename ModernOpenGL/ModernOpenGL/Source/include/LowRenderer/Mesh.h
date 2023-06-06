@@ -9,7 +9,7 @@ class Model;
 class Mesh
 {
 public:
-	Mesh() {}
+	Mesh();
 	Mesh(Model* const model, Shader* const shader, Texture* const texture);
 	~Mesh();
 

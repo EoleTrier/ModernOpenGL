@@ -8,7 +8,7 @@ class ResourceManager
 {
 public:
 
-	std::unordered_map<std::string, Resource*> Resources;
+	std::unordered_map<std::string, Resource*> resources;
 
 	template<class T>
 	T* Create(std::string name);
@@ -20,23 +20,23 @@ public:
 template<class T>
 inline T* ResourceManager::Create(std::string name)
 {
-	if (Resources[name] != nullptr)
+	if (resources[name] != nullptr)
 		Delete(name);
 	T* resource = new T;
-	Resources[name] = resource;
+	resources[name] = resource;
 	return resource;
 }
 
 template<class T>
 inline T* ResourceManager::Get(std::string name)
 {
-	return dynamic_cast<T*>(Resources[name]);
+	return dynamic_cast<T*>(resources[name]);
 }
 
 inline void ResourceManager::Delete(std::string name)
 {
-	delete Resources[name];
-	Resources.erase(name);
+	delete resources[name];
+	resources.erase(name);
 }
 
 

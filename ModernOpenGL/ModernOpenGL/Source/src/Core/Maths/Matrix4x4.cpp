@@ -23,17 +23,17 @@ Matrix4x4::Matrix4x4(const std::initializer_list<float> data)
 	}
 }
 
-Matrix4x4 Matrix4x4::identity()
+Matrix4x4 Matrix4x4::Identity()
 {
 	return Matrix4x4{ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 }
 
-Matrix4x4 Matrix4x4::transpose()
+Matrix4x4 Matrix4x4::Transpose()
 {
 	return Matrix4x4{ mat[0], mat[4], mat[8], mat[12], mat[1], mat[5], mat[9], mat[13], mat[2], mat[6], mat[10], mat[14], mat[3], mat[7], mat[11], mat[15] };
 }
 
-Matrix4x4 Matrix4x4::translate3D(const Vector3& v)
+Matrix4x4 Matrix4x4::Translate3D(const Vector3& v)
 {
 	return Matrix4x4{ 1, 0, 0, v.x, 
 					  0, 1, 0, v.y, 
@@ -42,14 +42,14 @@ Matrix4x4 Matrix4x4::translate3D(const Vector3& v)
 }
 
 
-Matrix4x4 Matrix4x4::scaling3D(const Vector3& v)
+Matrix4x4 Matrix4x4::Scaling3D(const Vector3& v)
 {
 	return Matrix4x4{ v.x, 0,   0,   0,
 					  0,   v.y, 0,   0,
 					  0,   0,   v.z, 0,
 					  0,   0,   0,   1 } ;
 }
-Matrix4x4 Matrix4x4::rotate3DX(float angle)
+Matrix4x4 Matrix4x4::Rotate3DX(float angle)
 {
 	float c = cosf(angle);
 	float s = sinf(angle);
@@ -59,7 +59,7 @@ Matrix4x4 Matrix4x4::rotate3DX(float angle)
 					  0, s,  c, 0,
 					  0, 0,  0, 1 };
 }
-Matrix4x4 Matrix4x4::rotate3DY(float angle)
+Matrix4x4 Matrix4x4::Rotate3DY(float angle)
 {
 	float c = cosf(angle);
 	float s = sinf(angle);
@@ -69,7 +69,7 @@ Matrix4x4 Matrix4x4::rotate3DY(float angle)
 					  -s, 0, c, 0,
 					   0, 0, 0, 1 };
 }
-Matrix4x4 Matrix4x4::rotate3DZ(float angle)
+Matrix4x4 Matrix4x4::Rotate3DZ(float angle)
 {
 	float c = cosf(angle);
 	float s = sinf(angle);
@@ -80,33 +80,33 @@ Matrix4x4 Matrix4x4::rotate3DZ(float angle)
 					   0,  0, 0, 1 };
 }
 
-Matrix4x4 Matrix4x4::rotate(const Vector3& angles)
+Matrix4x4 Matrix4x4::Rotate(const Vector3& angles)
 {
-	return Matrix4x4::rotate3DX(angles.x) * Matrix4x4::rotate3DY(angles.y) * Matrix4x4::rotate3DZ(angles.z);
+	return Matrix4x4::Rotate3DX(angles.x) * Matrix4x4::Rotate3DY(angles.y) * Matrix4x4::Rotate3DZ(angles.z);
 }
 
 Matrix4x4 Matrix4x4::TRS(const Matrix4x4& rota, const Vector3& trans, const Vector3& scale)
 {
-	Matrix4x4 trs = identity();
+	Matrix4x4 trs = Identity();
 	trs.mat[3] = trans.x;
 	trs.mat[7] = trans.y;
 	trs.mat[11] = trans.z;
 
 	Matrix4x4 rs = rota;
 
-	return trs * rs * scaling3D(scale);
+	return trs * rs * Scaling3D(scale);
 }
 
 Matrix4x4 Matrix4x4::TRS(const Vector3& rota, const Vector3& trans, const Vector3& scale)
 {
-	Matrix4x4 trs = identity();
+	Matrix4x4 trs = Identity();
 	trs.mat[3] = trans.x;
 	trs.mat[7] = trans.y;
 	trs.mat[11] = trans.z;
 
-	Matrix4x4 rs = rotate3DZ(rota.z) * rotate3DY(rota.y) * rotate3DX(rota.x);
+	Matrix4x4 rs = Rotate3DZ(rota.z) * Rotate3DY(rota.y) * Rotate3DX(rota.x);
 
-	return trs * rs * scaling3D(scale);
+	return trs * rs * Scaling3D(scale);
 }
 
 Matrix4x4 Matrix4x4::operator*(const Matrix4x4& a)

@@ -3,7 +3,7 @@
 
 
 SpotLight::SpotLight(const Vector3& diffuse, const Vector3& ambient, const Vector3& specular, const Vector3& position, const Vector3& direction, const float constant, const float linear,
-    const float quadratic, const float cutOff, const float outerCutOff, int ID)
+    const float quadratic, const float cutOff, const float outerCutOff, int id)
 {
     diffuseColor = diffuse;
     ambientColor = ambient;
@@ -15,19 +15,19 @@ SpotLight::SpotLight(const Vector3& diffuse, const Vector3& ambient, const Vecto
     this->quadratic = quadratic;
     this->cutOff = cutOff;
     this->outerCutOff = outerCutOff;
-    this->ID = ID;
+    this->id = id;
 
 };
 void SpotLight::SetSpotLight(Shader* shader)
 {
-    shader->setVec3("spotLights[" + std::to_string(ID) + "].position", position);
-    shader->setVec3("spotLights[" + std::to_string(ID) + "].direction", direction);
-    shader->setVec3("spotLights[" + std::to_string(ID) + "].ambient", ambientColor);
-    shader->setVec3("spotLights[" + std::to_string(ID) + "].diffuse", diffuseColor);
-    shader->setVec3("spotLights[" + std::to_string(ID) + "].specular", specularColor);
-    shader->setFloat("spotLights[" + std::to_string(ID) + "].constant", constant);
-    shader->setFloat("spotLights[" + std::to_string(ID) + "].linear", linear);
-    shader->setFloat("spotLights[" + std::to_string(ID) + "].quadratic", quadratic);
-    shader->setFloat("spotLights[" + std::to_string(ID) + "].cutOff", cos(ToRadians * cutOff));
-    shader->setFloat("spotLights[" + std::to_string(ID) + "].outerCutOff", cos(ToRadians * outerCutOff));
+    shader->SetVec3("spotLights[" + std::to_string(id) + "].position", position);
+    shader->SetVec3("spotLights[" + std::to_string(id) + "].direction", direction);
+    shader->SetVec3("spotLights[" + std::to_string(id) + "].ambient", ambientColor);
+    shader->SetVec3("spotLights[" + std::to_string(id) + "].diffuse", diffuseColor);
+    shader->SetVec3("spotLights[" + std::to_string(id) + "].specular", specularColor);
+    shader->SetFloat("spotLights[" + std::to_string(id) + "].constant", constant);
+    shader->SetFloat("spotLights[" + std::to_string(id) + "].linear", linear);
+    shader->SetFloat("spotLights[" + std::to_string(id) + "].quadratic", quadratic);
+    shader->SetFloat("spotLights[" + std::to_string(id) + "].cutOff", cos(ToRadians * cutOff));
+    shader->SetFloat("spotLights[" + std::to_string(id) + "].outerCutOff", cos(ToRadians * outerCutOff));
 }

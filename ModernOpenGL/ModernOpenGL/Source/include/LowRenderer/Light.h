@@ -12,5 +12,4 @@ public:
 	Vector3 diffuseColor;
 	Vector3 ambientColor;
 	Vector3 specularColor;
-
 };

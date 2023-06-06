@@ -11,8 +11,18 @@
 class Application
 {
 public:
-
 	static Object* world;
+	ResourceManager resourceManager;
+	static Camera camera;
+	static float lastX, lastY;
+	static float yaw, pitch;
+	static bool firstMouse;
+	static Vector3 cameraFront;
+	static float deltaTime;
+	static float lastFrame;
+	static float Width, Height;
+	static GLFWwindow* window;
+
 	Application();
 	~Application();
 
@@ -23,27 +33,6 @@ public:
 
 	void Update();
 
-	ResourceManager resourceManager;
-
-	static Camera camera;
-	static float lastX, lastY;
-	static float yaw, pitch;
-	static bool firstMouse;
-	static Vector3 cameraFront;
-
-	static float deltaTime;
-	static float lastFrame;
-
-	static unsigned int cubeVBO, cubeVAO;
-	static unsigned int lightCubeVAO;
-
-	static Vector3 cubePositions[];
-	static Vector3 pointLightPositions[];
-	
-	static Vector3 lightPos;
-
-	static float Width, Height;
-	static GLFWwindow* window;
 
 private:
 };

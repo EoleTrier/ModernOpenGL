@@ -2,9 +2,9 @@
 
 Object::Object()
 {
-	tranform = Transform(Matrix4x4::identity());
+	tranform = Transform(Matrix4x4::Identity());
 
-	tranform.Scaling = 1;
+	tranform.scaling = 1;
 	tranform.object = this;
 }
 
@@ -12,6 +12,6 @@ Object::Object(const Transform& t)
 {
 	tranform = t;
 
-	tranform.Scaling = 1;
+	tranform.scaling = 1;
 	tranform.object = this;
 }

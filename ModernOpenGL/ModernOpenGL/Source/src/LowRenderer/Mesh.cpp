@@ -1,6 +1,10 @@
 #include "LowRenderer/Mesh.h"
 #include "Ressources/Model.h"
 
+Mesh::Mesh()
+{
+}
+
 Mesh::Mesh(Model* const model, Shader* const shader, Texture* const texture)
 {
 	mModel = model;
@@ -39,17 +43,17 @@ Mesh::~Mesh()
 void Mesh::Draw(Camera& cam, const Matrix4x4& localModel)
 {
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, mTexture->ID);
+    glBindTexture(GL_TEXTURE_2D, mTexture->id);
 
-    mShader->use();
+    mShader->Use();
 
     Matrix4x4 model = localModel;
     Matrix4x4 view = cam.GetViewMatrix();
     Matrix4x4 projection = Matrix4x4::PerspectiveProjection(cam.Zoom * ToRadians, 800.f / 600.f, 0.1f, 1000.f);
 
-    mShader->setMat4("model", model);
-    mShader->setMat4("view", view);
-    mShader->setMat4("projection", projection);
+    mShader->SetMat4("model", model);
+    mShader->SetMat4("view", view);
+    mShader->SetMat4("projection", projection);
 
     glBindVertexArray(mModel->VAO);
     glDrawArrays(GL_TRIANGLES, 0, mModel->vertices.size());

@@ -1,35 +1,39 @@
 #include "Physics/Transform.h"
 
+Transform::Transform()
+{
+}
+
 Transform::Transform(const Matrix4x4& localModel)
 {
-    LocalModel = localModel;
+    this->localModel = localModel;
 }
 
 
 void Transform::UpdateSelfAndChilds()
 {
-    LocalModel = Matrix4x4::TRS(Rotation, Position, Scaling);
+    localModel = Matrix4x4::TRS(rotation, position, scaling);
 
-    if (Parent)
-        GlobalModel = Parent->GlobalModel * LocalModel;
+    if (parent)
+        globalModel = parent->globalModel * localModel;
     else
-        GlobalModel = LocalModel;
+        globalModel = localModel;
 
-    for (int i = 0; i < Childs.size(); i++)
+    for (int i = 0; i < childs.size(); i++)
     {
-        Childs[i]->UpdateSelfAndChilds();
+        childs[i]->UpdateSelfAndChilds();
     }
 }
 
 void Transform::AddChild(Transform* const t)
 {
-    this->Childs.push_back(t);
-    if (t->Parent)
-        t->Parent->RemoveChild(t);
-    t->Parent = this;
+    this->childs.push_back(t);
+    if (t->parent)
+        t->parent->RemoveChild(t);
+    t->parent = this;
 }
 
 void Transform::RemoveChild(Transform* const t)
 {
-    std::erase(Childs, t);
+    std::erase(childs, t);
 }

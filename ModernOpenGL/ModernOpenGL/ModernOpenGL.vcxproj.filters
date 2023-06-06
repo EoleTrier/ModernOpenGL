@@ -54,9 +54,6 @@
     <ClInclude Include="Externals\include\KHR\khrplatform.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Source\include\Core\DataStructure\Graph.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="Source\include\Core\Debug\Assertion.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -90,9 +87,6 @@
     <ClInclude Include="Source\include\Ressources\ResourceManager.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Source\include\Ressources\Scene.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="Source\include\Ressources\Shader.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -122,9 +116,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\src\Core\DataStructure\Graph.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="Source\src\Core\Debug\Log.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -153,9 +144,6 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Source\src\Ressources\Model.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\src\Ressources\Scene.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Source\src\Ressources\Shader.cpp">

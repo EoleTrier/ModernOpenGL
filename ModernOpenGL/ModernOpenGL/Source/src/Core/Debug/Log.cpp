@@ -2,20 +2,18 @@
 #include <iostream>
 #include <cstdarg>
 
-
-std::fstream Log::m_File;
-
+std::fstream Log::mFile;
 
 Log::~Log()
 {
-    m_File.close();
+    mFile.close();
 }
 
 void Log::OpenFile(std::filesystem::path const& filename)
 {
-    m_File.open(filename, std::fstream::out);
+    mFile.open(filename, std::fstream::out);
 
-    if (m_File.is_open())
+    if (mFile.is_open())
     {
         std::cout << "Open file: " << filename << std::endl;
     }
@@ -32,10 +30,10 @@ void Log::Print(const char* format, ...)
     vsprintf_s(buffer, sizeof(buffer), format, args);
     std::cout << buffer << std::endl;
 
-    if (m_File.is_open())
+    if (mFile.is_open())
     {
-        m_File << buffer << std::endl;
-        m_File.flush();
+        mFile << buffer << std::endl;
+        mFile.flush();
     }
     
     va_end(args);

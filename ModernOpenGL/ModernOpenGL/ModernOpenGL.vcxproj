@@ -32,7 +32,6 @@
     <ClInclude Include="Source\Core\DataStructure\Graph.h" />
     <ClInclude Include="Source\Core\Debug\Assertion.h" />
     <ClInclude Include="Source\Core\Debug\Log.h" />
-    <ClInclude Include="Source\include\Core\DataStructure\Graph.h" />
     <ClInclude Include="Source\include\Core\Debug\Assertion.h" />
     <ClInclude Include="Source\include\Core\Debug\Log.h" />
     <ClInclude Include="Source\include\Core\Maths\Matrix4x4.h" />
@@ -51,13 +50,11 @@
     <ClInclude Include="Source\include\Ressources\Resource.h" />
     <ClInclude Include="Source\include\Ressources\Model.h" />
     <ClInclude Include="Source\include\Ressources\ResourceManager.h" />
-    <ClInclude Include="Source\include\Ressources\Scene.h" />
     <ClInclude Include="Source\include\Ressources\Shader.h" />
     <ClInclude Include="Source\include\Ressources\Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Externals\src\glad.c" />
-    <ClCompile Include="Source\src\Core\DataStructure\Graph.cpp" />
     <ClCompile Include="Source\src\Core\Debug\Log.cpp" />
     <ClCompile Include="Source\src\Core\Maths\Matrix4x4.cpp" />
     <ClCompile Include="Source\src\Core\Maths\Vector2.cpp" />
@@ -74,7 +71,6 @@
     <ClCompile Include="Source\src\Physics\Transform.cpp" />
     <ClCompile Include="Source\src\Ressources\Application.cpp" />
     <ClCompile Include="Source\src\Ressources\Model.cpp" />
-    <ClCompile Include="Source\src\Ressources\Scene.cpp" />
     <ClCompile Include="Source\src\Ressources\Shader.cpp" />
     <ClCompile Include="Source\src\Ressources\Texture.cpp" />
   </ItemGroup>
