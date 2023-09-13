@@ -6,13 +6,13 @@
 
 class Model;
 
-class Mesh
+class Mesh : public Resource
 {
 public:
 	Mesh();
-	Mesh(Model* const model, Shader* const shader, Texture* const texture);
 	~Mesh();
 
+	void SetAttributesAndInit(Model* const model, Shader* const shader, Texture* const texture);
 	void Draw(Camera& cam, const Matrix4x4& localModel);
 
 private:

@@ -66,18 +66,19 @@ Application::Application()
     shad->SetInt("material.diffuse", 0);
     shad->SetInt("material.specular", 1);
     
-    viking->mesh = new Mesh(viking, shad, text);
-    Mesh* vikingMesh = viking->mesh;
+    Mesh* mesh = mResourceManager.Create<Mesh>("viking_mesh");
+    mesh->SetAttributesAndInit(viking, shad, text);
+    viking->mesh = mesh;
     
     world = new Object();
     Object* v = new Object();
-    v->mesh = vikingMesh;
+    v->mesh = mesh;
     world->tranform.AddChild(&v->tranform);
    
     for (int i = 0; i < 10; i++)
     {
         Object* v1 = new Object();
-        v1->mesh = vikingMesh;
+        v1->mesh = mesh;
         float x = rand() % 5;
         float y = rand() % 5;
         float z = rand() % 5;

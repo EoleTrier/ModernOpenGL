@@ -1,15 +1,22 @@
 #include "LowRenderer/Mesh.h"
 #include "Ressources/Model.h"
 
+
 Mesh::Mesh()
 {
 }
 
-Mesh::Mesh(Model* const model, Shader* const shader, Texture* const texture)
+Mesh::~Mesh()
 {
-	mModel = model;
-	mShader = shader;
-	mTexture = texture;
+    glDeleteVertexArrays(1, &mModel->VAO);
+    glDeleteBuffers(1, &mModel->VBO);
+}
+
+void Mesh::SetAttributesAndInit(Model* const model, Shader* const shader, Texture* const texture)
+{
+    mModel = model;
+    mShader = shader;
+    mTexture = texture;
     glGenVertexArrays(1, &mModel->VAO);
 
     glGenBuffers(1, &mModel->VBO);
@@ -26,19 +33,13 @@ Mesh::Mesh(Model* const model, Shader* const shader, Texture* const texture)
     glEnableVertexAttribArray(1);
 
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TextureUV));
-    glEnableVertexAttribArray(2);    
-    
-    glBindVertexArray(0);
+    glEnableVertexAttribArray(2);
 
+    glBindVertexArray(0);
 
     mModel->mesh = this;
 }
 
-Mesh::~Mesh()
-{
-    glDeleteVertexArrays(1, &mModel->VAO);
-    glDeleteBuffers(1, &mModel->VBO);
-}
 
 void Mesh::Draw(Camera& cam, const Matrix4x4& localModel)
 {
@@ -59,3 +60,5 @@ void Mesh::Draw(Camera& cam, const Matrix4x4& localModel)
     glDrawArrays(GL_TRIANGLES, 0, mModel->vertices.size());
     
 }
+
+
